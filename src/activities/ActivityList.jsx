@@ -1,8 +1,10 @@
 import useQuery from "../api/useQuery";
 import { Link } from "react-router";
+import { useActivity } from "./ActivityContext.jsx";
 
 /** Shows a list of activities. */
 export default function ActivityList() {
+  const { setActivities } = useActivity();
   const {
     data: activities,
     loading,
@@ -11,6 +13,8 @@ export default function ActivityList() {
 
   if (loading || !activities) return <p>Loading...</p>;
   if (error) return <p>Sorry! {error}</p>;
+
+  if (activities) setActivities(activities);
 
   return (
     <ul>

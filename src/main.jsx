@@ -6,13 +6,16 @@ import { BrowserRouter } from "react-router";
 
 import { AuthProvider } from "./auth/AuthContext";
 import { ApiProvider } from "./api/ApiContext";
+import { ActivityProvider } from "./activities/ActivityContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
     <ApiProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <ActivityProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ActivityProvider>
     </ApiProvider>
   </AuthProvider>,
 );

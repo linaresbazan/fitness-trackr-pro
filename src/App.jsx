@@ -6,6 +6,8 @@ import Login from "./auth/Login";
 import ActivitiesPage from "./activities/ActivitiesPage";
 import Error404 from "./Error404.jsx";
 import ActivityDetails from "./activities/ActivityDetails.jsx";
+import RoutinesPage from "./routines/RoutinesPage.jsx";
+import RoutineDetails from "./routines/RoutineDetails.jsx";
 
 /**
  * Fitness Trackr is a platform where fitness enthusiasts can share their workouts and
@@ -22,6 +24,8 @@ export default function App() {
       <Route path="/login" element={<Login/>} />
       <Route path="/activities" element={<ActivitiesPage />} />
       <Route path="/activities/:activityId" element={<ActivityDetails />} />
+      <Route path="/routines" element={<RoutinesPage />} />
+      <Route path="/routines/:routineId" element={<RoutineDetails />} />
       <Route path="/*" element={<Error404 />} />
     </Route>
   </Routes>

@@ -2,20 +2,22 @@ import { Link, useParams, useNavigate } from "react-router"
 import useQuery from "../api/useQuery";
 import useMutation from "../api/useMutation";
 import { useAuth } from "../auth/AuthContext";
+import SetsSection from "./SetsSection.jsx";
 import { useEffect, useState } from "react";
 
-export default function ActivityDetails() {
+export default function RoutineDetails() {
   const [shouldNavigate, setShouldNavigate] = useState(false);
 
-  const { activityId } = useParams();
-  const { data: activityData, loading: queryLoading, error: queryError} = useQuery("/activities/" + activityId);
+  const { routineId } = useParams();
+  const { data: routineData, loading: queryLoading, error: queryError} = useQuery("/routines/" + routineId, `routineId${routineId}`);
   const { token } = useAuth();
-  const { mutate: deleteActivity, loading: mutateLoading, error: mutateError} 
-    = useMutation("DELETE", "/activities/" + activityId, ["activities"]);
+  const { mutate: deleteRoutine, loading: mutateLoading, error: mutateError}
+    = useMutation("DELETE", "/routines/" + routineId, ["routines"]);
   let navigate = useNavigate();
 
-  const deleteActivityOnClick = async () => {
-    await deleteActivity();
+
+  const deleteRoutineOnClick = async () => {
+    await deleteRoutine();
     if (!mutateLoading && !mutateError) {
       setShouldNavigate(true);
     } else {
@@ -25,27 +27,28 @@ export default function ActivityDetails() {
 
   useEffect(() => {
     if (!mutateLoading && !mutateError && shouldNavigate) {
-      navigate("/activities");
+      navigate("/routines");
     }
   }, [mutateLoading, mutateError, shouldNavigate]);
 
-  if (queryLoading || mutateLoading || !activityData) return <p>Loading...</p>;
+
+  if (queryLoading || mutateLoading || !routineData) return <p>Loading...</p>;
   if (queryError) return <p>Sorry {queryError}</p>
-  // if (mutateError) return <p>Sorry {mutateError}</p>
 
   return (
     <div>
       <section>
-        <h2>{activityData.name}</h2>
-        <p>{activityData.description}</p>
-        <p>By {activityData.creatorName}</p>
+        <h2>{routineData.name}</h2>
+        <p>{routineData.description}</p>
+        <p>By {routineData.creatorName}</p>
         {token && (
-          <button onClick={() => deleteActivityOnClick()}>
+          <button onClick={() => deleteRoutineOnClick()}>
             {queryLoading || mutateLoading ? "Deleting" : queryError ? queryError : mutateError ? mutateError : "Delete"}
           </button>
         )}
-        <Link to={"/activities"}>Back to Activities List</Link>
+        <Link to={"/routines"}>Back to Routines List</Link>
       </section>
+      <SetsSection sets={routineData.sets} routineId={routineId} />
     </div>
   );
 }
